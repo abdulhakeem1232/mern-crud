@@ -42,7 +42,7 @@ const loginUser=async(req,res)=>{
 
     const token=jwt.sign({userId:login._id},process.env.SECRET_KEY, { expiresIn: '1h' })
     console.log(token);
-    res.cookie('jwt', token, {  httpOnly: true, secure: true, maxAge: 3600000 });
+    res.cookie('jwt', token, {  httpOnly: true, secure: false,sameSite:'strict', maxAge: 3600000 });
     console.log(login,'llp',login.isAdmin);
     return res.status(200).json({
       token,
@@ -71,17 +71,20 @@ const profileuploaded=async(req,res)=>{
     //   console.log('oo');
     //   return res.status(400).json({ message: "Invalid user ID" });
     // }
-    console.log(req.body,'body',req,'req');
+    console.log('cook',req.cookies.jwt,'cook');
+    console.log('Request Cookies:', req.cookies);
+    // console.log(req.body,'body',req.file,'req');
     const login = await user.findById(id);
     const {img}=req.body
-    console.log(login,'login');
+    // console.log(login,'login');
     if (login) {
       console.log('if',img);
       let result=await user.updateOne({_id:id},{$set:{img:img}});
-      console.log(result,'lll');
-
+      // console.log(result,'lll');
+      let updatedUser=await user.findById(id)
+      // console.log(updatedUser.img,'iilll');
       res.status(201).json({
-        img: login.img,
+        img: updatedUser.img,
       });
     } else {
       console.log('ee');

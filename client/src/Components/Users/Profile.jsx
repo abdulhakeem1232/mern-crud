@@ -7,9 +7,6 @@ import { checkUserAuthentication } from '../../Redux/userSlice';
 import Button from 'react-bootstrap/Button';
 import axiosInstance from '../../utils/axios';
 
-
-
-
 function Profile() {
   const id=useSelector((state)=>state.userData.userId)
   const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
@@ -29,6 +26,8 @@ const dispatch=useDispatch()
     })
     console.log(res,'res');
     setImagePreviewUrl(res.data.img)
+    console.log('lol',imagePreviewUrl);
+    localStorage.setItem("img", JSON.stringify(res.data.img));
     navigate('/home')
   }
   const handlechange=(e)=>{
@@ -53,8 +52,8 @@ const dispatch=useDispatch()
         <Row className="mt-4">
           <Col xs={12} md={4} className="text-center">
             {imagePreviewUrl}
-            {imagePreviewUrl ? (
-              <Image src={'../../../..uploads'+imagePreviewUrl} roundedCircle fluid style={{ maxWidth: '250px' }} />
+            {imagePreviewUrl!='undefined' ? (
+              <Image src={ `/uploads/${imagePreviewUrl}`} roundedCircle fluid style={{ maxWidth: '250px' }} />
             ) : (
               <Image
                 src="https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png"

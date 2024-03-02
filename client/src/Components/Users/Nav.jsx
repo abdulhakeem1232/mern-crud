@@ -10,6 +10,8 @@ function Nav() {
     const dispatch=useDispatch()
     const handleLogout=()=>{
         localStorage.removeItem('jwt');
+        localStorage.removeItem('id');
+        localStorage.removeItem('img');
         dispatch(logout())
         navigate('/')
       }
